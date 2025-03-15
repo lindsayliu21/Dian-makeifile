@@ -10,7 +10,7 @@ int main(int argc,char *argv[]){
     Rule rules[MAX_TARGERS];
     int rule_count=0;
     //解析规则（示例)
-    parse_rule{"app:main utils.c",&rules[rule_count]};
+    parse_rule("app:main utils.c",&rules[rule_count]);
     rule_count++;
     //检查重复目标和依赖
     check_duplicate_target(rules,rule_count,"app");

@@ -25,11 +25,19 @@ void parse_rule(const char *line,Rule*rule){
     }
 //假设下一行是命令(需要外部处理)
 }
+void check_duplicate_target(Rule rules[],int rule_count,const char *target){
+    for(int i=0;i<rule_count;i++){
+        if(strcmp(rules[i].target,target)==0){
+            fprintf(stderr,"错误：目标'%s'重复定义\n",target);
+            return;
+        }
+    }
+}
 //检查依赖是否存在
 void check_dependencies(Rule rule[],int rule_count){
     for(int i=0;i<rule_count;i++){
-        for(int j=0;j<rules[i].dep_count;j++){
-            const char *dep=rules[i].dependencies[j];
+        for(int j=0;j<rule[i].dep_count;j++){
+            const char *dep=rule[i].dependencies[j];
             int exists=0;
             //检查是否为文件或已定义的目标
             FILE*file=fopen(dep,"r");
@@ -38,7 +46,7 @@ void check_dependencies(Rule rule[],int rule_count){
                 exists=1;
             }else {
                 for(int k=0;k<rule_count;k++){
-                    if(strcmp(rules[k].target,dep)==0){
+                    if(strcmp(rule[k].target,dep)==0){
                         exists=1;
                         break;
                     }
